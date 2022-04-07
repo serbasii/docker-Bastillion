@@ -1,0 +1,122 @@
+<!--/**
+ *    Copyright (C) 2013 Loophole, LLC
+ *
+ *    Licensed under The Prosperity Public License 3.0.0
+ */-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:replace="_res/inc/header"/>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("table").css("background-color", "#ffffff");
+            $("table tr:even").css("background-color", "#e0e0e0");
+        });
+    </script>
+
+    <title> Main Menu</title>
+
+</head>
+
+
+<body>
+<div th:replace="_res/inc/navigation"></div>
+
+
+<div class="container">
+    <div class="template">
+
+        <table class="table-striped">
+            <thead>
+            <tr>
+                <th colspan="2">Main Menu</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <template th:if="${#strings.equals(session.userType,'M')}" th:remove="tag">
+                <tr>
+
+                    <td>
+                        <a th:href="'../manage/viewSystems.ktrl?_csrf=' + ${session._csrf}">Systems</a>
+
+                    </td>
+
+
+                    <td>
+                        Manage systems so that access may be granted for establishing SSH sessions.
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <a th:href="'../manage/viewProfiles.ktrl?_csrf=' + ${session._csrf}">Profiles</a>
+                    </td>
+                    <td>
+                        Create profiles and assign systems to grant user access and distribute keys.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a th:href="'../manage/viewUsers.ktrl?_csrf=' + ${session._csrf}">Users</a>
+
+                    </td>
+                    <td>
+                        Manage user accounts and profiles. Profiles grants a user access to the defined systems.
+                    </td>
+                </tr>
+            </template>
+
+
+            <tr>
+                <td>
+                    <a th:href="'../admin/viewSystems.ktrl?_csrf=' + ${session._csrf}">Composite SSH Terms</a>
+                </td>
+                <td>
+                    Execute multiple-simultaneous web-terminals on selected systems.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a th:href="'../admin/viewScripts.ktrl?_csrf=' + ${session._csrf}">Composite Scripts</a>
+                </td>
+                <td>
+                    Create scripts to be executed on selected systems simultaneously through a web-terminal.
+                </td>
+            </tr>
+            <tr th:if="${@io.bastillion.manage.util.SSHUtil@keyManagementEnabled}">
+
+                <td th:if="${#strings.equals(session.userType,'M')}">
+                    <a th:href="'../manage/viewKeys.ktrl?_csrf=' + ${session._csrf}">Manage SSH Keys</a>
+                </td>
+                <td th:if="${#strings.equals(session.userType,'M')}">
+                    Disable any administrative key forcing rotation. Set additional public SSH keys for current user.
+                </td>
+                <td th:if="${!#strings.equals(session.userType,'M')}">
+                    <a th:href="'../admin/viewKeys.ktrl?_csrf=' + ${session._csrf}">Manage SSH Keys</a>
+                </td>
+                <td th:if="${!#strings.equals(session.userType,'M')}">
+                    Set additional public SSH keys for current user.
+                </td>
+            </tr>
+            <tr th:if="${@io.bastillion.manage.util.SessionOutputUtil@enableInternalAudit &&  #strings.equals(session.userType,'M')}">
+                <td>
+                    <a th:href="'../manage/viewSessions.ktrl?_csrf=' + ${session._csrf}">Audit Sessions</a>
+                </td>
+                <td>
+                    Audit administrator's sessions and terminal history.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a th:href="'../admin/userSettings.ktrl?_csrf=' + ${session._csrf}">Settings</a>
+                </td>
+                <td>Administrative settings</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
